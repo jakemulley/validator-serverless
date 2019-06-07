@@ -1,0 +1,331 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "OrganisationURI",
+    "OrganisationLabel",
+    "SiteReference",
+    "SiteNameAddress",
+    "SiteplanURL",
+    "CoordinateReferenceSystem",
+    "GeoX",
+    "GeoY",
+    "Hectares",
+    "OwnershipStatus",
+    "PlanningStatus",
+    "MinNetDwellings",
+    "FirstAddedDate",
+    "LastUpdatedDate"
+  ],
+  "properties": {
+    "OrganisationURI": {
+      "$id": "#/properties/OrganisationURI",
+      "type": "string",
+      "title": "The Organisationuri Schema",
+      "default": "",
+      "examples": [
+        "http://opendatacommunities.org/id/district-council/example"
+      ],
+      "pattern": "^http:\\/\\/opendatacommunities.org\\/id\\/",
+      "format": "uri"
+    },
+    "OrganisationLabel": {
+      "$id": "#/properties/OrganisationLabel",
+      "type": "string",
+      "title": "The Organisationlabel Schema",
+      "default": "",
+      "examples": [
+        "Example District Council"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "SiteReference": {
+      "$id": "#/properties/SiteReference",
+      "type": "string",
+      "title": "The Sitereference Schema",
+      "default": "",
+      "examples": [
+        "SHLAA001"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "PreviouslyPartOf": {
+      "$id": "#/properties/PreviouslyPartOf",
+      "type": "string",
+      "title": "The Previouslypartof Schema",
+      "default": "",
+      "examples": [
+        ""
+      ],
+      "pattern": "^(.*)$"
+    },
+    "SiteNameAddress": {
+      "$id": "#/properties/SiteNameAddress",
+      "type": "string",
+      "title": "The Sitenameaddress Schema",
+      "default": "",
+      "examples": [
+        "land behind example lane, example village"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "SiteplanURL": {
+      "$id": "#/properties/SiteplanURL",
+      "type": "string",
+      "title": "The Siteplanurl Schema",
+      "default": "",
+      "examples": [
+        "http://www.example.gov.uk/siteview.html?siteref=SHLAA001"
+      ],
+      "pattern": "^(http|https):\\/\\/",
+      "format": "uri"
+    },
+    "CoordinateReferenceSystem": {
+      "$id": "#/properties/CoordinateReferenceSystem",
+      "type": "string",
+      "title": "The Coordinatereferencesystem Schema",
+      "default": "",
+      "examples": [
+        "ETRS89",
+        "OSGB36",
+        "WGS84"
+      ],
+      "pattern": "(WGS84|OSGB36|ETRS89)"
+    },
+    "GeoX": {
+      "$id": "#/properties/GeoX",
+      "type": "number",
+      "title": "The Geox Schema",
+      "default": 0.0,
+      "examples": [
+        -1.123456
+      ]
+    },
+    "GeoY": {
+      "$id": "#/properties/GeoY",
+      "type": "number",
+      "title": "The Geoy Schema",
+      "default": 0.0,
+      "examples": [
+        53.123456
+      ]
+    },
+    "Hectares": {
+      "$id": "#/properties/Hectares",
+      "type": "number",
+      "title": "The Hectares Schema",
+      "default": 0.0,
+      "examples": [
+        2.25
+      ]
+    },
+    "OwnershipStatus": {
+      "$id": "#/properties/OwnershipStatus",
+      "type": "string",
+      "title": "The Ownershipstatus Schema",
+      "default": "",
+      "examples": [
+        "not owned by a public authority",
+        "mixed ownership",
+        "unknown ownership",
+        "owned by a public authority"
+      ],
+      "pattern": "(owned by a public authority|not owned by a public authority|unknown ownership|mixed ownership)"
+    },
+    "Deliverable": {
+      "$id": "#/properties/Deliverable",
+      "title": "The Deliverable Schema",
+      "default": "",
+      "examples": [
+        "yes"
+      ],
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "pattern": "(yes)" }
+      ]
+    },
+    "PlanningStatus": {
+      "$id": "#/properties/PlanningStatus",
+      "type": "string",
+      "title": "The Planningstatus Schema",
+      "default": "",
+      "examples": [
+        "permissioned"
+      ],
+      "pattern": "(permissioned|not permissioned|pending decision)"
+    },
+    "PermissionType": {
+      "$id": "#/properties/PermissionType",
+      "title": "The Permissiontype Schema",
+      "default": "",
+      "examples": [
+        "outline planning permission"
+      ],
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "pattern": "(full planning permission|outline planning permission|reserved matters approval|permission in principle|technical details consent|planning permission granted under an order|other)" }
+      ]
+    },
+    "PermissionDate": {
+      "$id": "#/properties/PermissionDate",
+      "title": "The Permissiondate Schema",
+      "default": "",
+      "examples": [
+        "2017-08-08"
+      ],
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "date", "pattern": "^$|^(?:(?:1[6-9]|[2]\\d)\\d{2})-(?:(?:0[1-9])|(?:1[0-2]))-(?:0[1-9]|1\\d|2[0-8])$|^(?:(?:1[6-9]|[2]\\d)\\d{2})-(?:(?:(?:(?:0[13578]|1[02]))-31)|(?:(?:0[1,3-9]|1[0-2])-(?:29|30)))$|^(?:(?:(?:1[6-9]|2\\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|2[048])00))-02-29)$" }
+      ]
+    },
+    "PlanningHistory": {
+      "$id": "#/properties/PlanningHistory",
+      "title": "The Planninghistory Schema",
+      "default": "",
+      "examples": [
+        "http://www.example.gov.uk/planning/applications?appref=SHLAA001|http://www.example.gov.uk/planning/applications?appref=SHLAA001(2)"
+      ],
+      "anyOf": [
+          { "type": "string", "format": "uri", "pattern": "^$|^(http|https):\\/\\/[^\\| ]+(\\|(http|https):\\/\\/[^\\| ]+)*$" },
+          { "type": "string", "maxLength": 0 }
+      ]
+    },
+    "ProposedForPIP": {
+      "$id": "#/properties/ProposedForPIP",
+      "title": "The Proposedforpip Schema",
+      "default": "",
+      "examples": [
+        ""
+      ],
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "pattern": "(yes)" }
+      ]
+    },
+    "MinNetDwellings": {
+      "$id": "#/properties/MinNetDwellings",
+      "title": "The Minnetdwellings Schema",
+      "default": 0,
+      "examples": [
+        30
+      ],
+      "anyOf": [
+        { "type": "integer" },
+        { "type": "string", "maxLength": 0 }
+      ]
+    },
+    "DevelopmentDescription": {
+      "$id": "#/properties/DevelopmentDescription",
+      "type": "string",
+      "title": "The Developmentdescription Schema",
+      "default": "",
+      "examples": [
+        "20, two-storey semi-detached houses. One block of 10 single bedroom flats. C3."
+      ],
+      "pattern": "^(.*)$"
+    },
+    "NonHousingDevelopment": {
+      "$id": "#/properties/NonHousingDevelopment",
+      "type": "string",
+      "title": "The Nonhousingdevelopment Schema",
+      "default": "",
+      "examples": [
+        ""
+      ],
+      "pattern": "^(.*)$"
+    },
+    "Part2": {
+      "$id": "#/properties/Part2",
+      "type": "string",
+      "title": "The Part2 Schema",
+      "default": "",
+      "examples": [
+        ""
+      ],
+      "pattern": "(yes|)"
+    },
+    "NetDwellingsRangeFrom": {
+      "$id": "#/properties/NetDwellingsRangeFrom",
+      "title": "The Netdwellingsrangefrom Schema",
+      "default": "",
+      "examples": [
+        ""
+      ],
+      "anyOf": [
+          { "type": "integer" },
+          { "type": "string", "maxLength": 0 }
+      ]
+    },
+    "NetDwellingsRangeTo": {
+      "$id": "#/properties/NetDwellingsRangeTo",
+      "title": "The Netdwellingsrangeto Schema",
+      "default": "",
+      "examples": [
+        ""
+      ],
+      "anyOf": [
+          { "type": "integer" },
+          { "type": "string", "maxLength": 0 }
+      ]
+    },
+    "HazardousSubstances": {
+      "$id": "#/properties/HazardousSubstances",
+      "title": "The Hazardoussubstances Schema",
+      "default": "",
+      "examples": [
+        ""
+      ],
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "pattern": "(yes)" }
+      ]
+    },
+    "SiteInformation": {
+      "$id": "#/properties/SiteInformation",
+      "title": "The Siteinformation Schema",
+      "default": "",
+      "examples": [
+        "http://www.example.gov.uk/planning/applications?appref=SHLAA001"
+      ],
+      "anyOf": [
+          { "type": "string", "format": "uri", "pattern": "^$|^(http|https):\\/\\/[^\\| ]+(\\|(http|https):\\/\\/[^\\| ]+)*$" },
+          { "type": "string", "maxLength": 0 }
+      ]
+    },
+    "Notes": {
+      "$id": "#/properties/Notes",
+      "type": "string",
+      "title": "The Notes Schema",
+      "default": "",
+      "examples": [
+        ""
+      ],
+      "pattern": "^(.*)$"
+    },
+    "FirstAddedDate": {
+      "$id": "#/properties/FirstAddedDate",
+      "type": "string",
+      "title": "The Firstaddeddate Schema",
+      "default": "",
+      "examples": [
+        "2017-08-08"
+      ],
+      "pattern": "^$|^(?:(?:1[6-9]|[2]\\d)\\d{2})-(?:(?:0[1-9])|(?:1[0-2]))-(?:0[1-9]|1\\d|2[0-8])$|^(?:(?:1[6-9]|[2]\\d)\\d{2})-(?:(?:(?:(?:0[13578]|1[02]))-31)|(?:(?:0[1,3-9]|1[0-2])-(?:29|30)))$|^(?:(?:(?:1[6-9]|2\\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|2[048])00))-02-29)$",
+      "format": "date"
+    },
+    "LastUpdatedDate": {
+      "$id": "#/properties/LastUpdatedDate",
+      "type": "string",
+      "title": "The Lastupdateddate Schema",
+      "default": "",
+      "examples": [
+        "2017-08-08"
+      ],
+      "pattern": "^$|^(?:(?:1[6-9]|[2]\\d)\\d{2})-(?:(?:0[1-9])|(?:1[0-2]))-(?:0[1-9]|1\\d|2[0-8])$|^(?:(?:1[6-9]|[2]\\d)\\d{2})-(?:(?:(?:(?:0[13578]|1[02]))-31)|(?:(?:0[1,3-9]|1[0-2])-(?:29|30)))$|^(?:(?:(?:1[6-9]|2\\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|2[048])00))-02-29)$",
+      "format": "date"
+    }
+  }
+}
