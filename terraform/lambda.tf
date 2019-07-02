@@ -28,6 +28,7 @@ resource "aws_lambda_function" "validator_validate_item" {
   runtime = "nodejs10.x"
   description = "Validates a row in DynamoDB"
   timeout = 30
+  memory_size = 256
 }
 
 resource "aws_lambda_function" "validator_get_organisation_results" {

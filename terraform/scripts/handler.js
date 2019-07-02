@@ -11,8 +11,8 @@ const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' })
 // Validator Setup
 const ajv = new Ajv({
   allErrors: true,
-  verbose: true,
-  coerceTypes: true
+  coerceTypes: true,
+  jsonPointers: true
 })
 
 // DynamoDB options
@@ -43,7 +43,8 @@ const actions = {
             'hash': crypto.randomBytes(20).toString('hex'),
             'organisation': item.organisation.toString() || null,
             'register-url': item['register-url'].toString() || null,
-            'validated': null
+            'validated': null,
+            'validatedErrors': null
           }
         }
       }))
@@ -78,7 +79,7 @@ const actions = {
             const transformed = await actions.csvToJson(register.data)
             validatorObject.isCsv = true
 
-            let parsedByRow = transformed.map(row => {
+            let parsedByRow = transformed.map(function (row) {
               const validatedRow = compiledValidator(row)
 
               row.validator = {
@@ -87,14 +88,13 @@ const actions = {
               }
 
               return row
-            })
+            }) || []
 
             if (parsedByRow.length) {
               validatorObject.isValid = parsedByRow.every(row => row.validator.isRowValid === true)
               validatorObject.hasRequiredHeaders = parsedByRow.every(row => row.validator.rowErrors.every(r => r.keyword !== 'required'))
+              formattedStreamItem.validatedErrors = JSON.stringify(parsedByRow) || null
             }
-
-            validatorObject.validation = parsedByRow
           }
         } catch (error) {
           if (error.response) {
@@ -107,7 +107,6 @@ const actions = {
       }
 
       formattedStreamItem.validated = JSON.stringify(validatorObject)
-      console.log(JSON.stringify(validatorObject.validation, null, 4))
 
       console.log(formattedStreamItem)
 
@@ -170,17 +169,24 @@ exports.getOrgResults = async (request) => {
 
   body.Items = item.Items.map(it => {
     it.validated = JSON.parse(it.validated) || null
+    delete it.validatedErrors
     return it
   })
 
   if (request.queryStringParameters && request.queryStringParameters.organisation) {
     body = {
       organisation: request.queryStringParameters.organisation,
-      results: item.Items.map(result => ({
-        'register-url': result['register-url'],
-        'date': result['date'],
-        'validated': result['validated']
-      }))
+      results: item.Items.map(function (result) {
+        const obj = {
+          'register-url': result['register-url'],
+          'date': result['date'],
+          'validated': result['validated']
+        }
+        if (result['date'] === new Date().toISOString().split('T')[0]) {
+          obj.errors = result['validationErrors']
+        }
+        return obj
+      })
     }
   }
 
