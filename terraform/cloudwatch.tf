@@ -1,25 +1,24 @@
 # CloudWatch Event Rules for retrieving master CSV
 # Caveat: cron rules are UTC only
-
-resource "aws_cloudwatch_event_rule" "validator_brownfield_schedule_fetch_master" {
-  name = "validator-brownfield-fetch-master"
-  description = "Validator - fetch master CSV file at 12am UTC every day"
+resource "aws_cloudwatch_event_rule" "ValidatorBrownfieldSites" {
+  name = "ValidatorBrownfieldSitesGetMaster"
+  description = "Validator (Brownfield Sites) - fetch master CSV file at 12am UTC every day"
   schedule_expression = "cron(0 0 * * ? *)"
   is_enabled = true
-  depends_on = ["aws_lambda_function.validator_fetch_master"]
+  depends_on = ["aws_lambda_function.validator_getMaster_lambda"]
 }
 
 # Associate events with functions
-resource "aws_cloudwatch_event_target" "validator_brownfield_schedule_fetch_master_target" {
-  rule = aws_cloudwatch_event_rule.validator_brownfield_schedule_fetch_master.name
-  target_id = "validator_brownfield_schedule_fetch_master_target"
-  arn = aws_lambda_function.validator_fetch_master.arn
+resource "aws_cloudwatch_event_target" "ValidatorBrownfieldSites_target" {
+  rule = aws_cloudwatch_event_rule.ValidatorBrownfieldSites.name
+  target_id = "ValidatorBrownfieldSites_target"
+  arn = aws_lambda_function.validator_getMaster_lambda.arn
 }
 
 # Allow CloudWatch to invoke Lambda functions
-resource "aws_lambda_permission" "validator_schedule_allow_cloudwatch_lambda" {
+resource "aws_lambda_permission" "ValidatorBrownfieldSites_AllowLambdaInvocation" {
   action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.validator_fetch_master.function_name
+  function_name = aws_lambda_function.validator_getMaster_lambda.function_name
   principal = "events.amazonaws.com"
-  source_arn = aws_cloudwatch_event_rule.validator_brownfield_schedule_fetch_master.arn
+  source_arn = aws_cloudwatch_event_rule.ValidatorBrownfieldSites.arn
 }

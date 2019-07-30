@@ -1,0 +1,6 @@
+{
+  "brownfield-sites": {
+    "master": "https://raw.githubusercontent.com/digital-land/alpha-data/master/mhclg-registers/brownfield-register-index.csv",
+    "schema": null
+  }
+}

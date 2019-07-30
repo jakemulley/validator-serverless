@@ -1,59 +1,63 @@
-resource "aws_iam_role" "validator_fetch_master" {
-  name               = "validator_fetch_master"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+resource "aws_iam_role" "ValidatorBrownfieldSites_iamrole" {
+  name = "validator_iam_role_lambda"
+  assume_role_policy = file("json/assume-role-policy.json")
 }
 
-data "aws_iam_policy_document" "validator_fetch_master" {
+resource "aws_iam_policy" "ValidatorBrownfieldSites_iam_policy" {
+  name = "validator_iam_policy"
+  policy = data.aws_iam_policy_document.ValidatorBrownfieldSites_policy.json
+  path = "/"
+}
+
+resource "aws_iam_role_policy_attachment" "ValidatorBrownfieldSites_iam_policy_attachment" {
+  role = aws_iam_role.ValidatorBrownfieldSites_iamrole.name
+  policy_arn = aws_iam_policy.ValidatorBrownfieldSites_iam_policy.arn
+}
+
+data "aws_iam_policy_document" "ValidatorBrownfieldSites_policy" {
   statement {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
     ]
+
     resources = [
-      "arn:aws:logs:*:*:*",
+      "arn:aws:logs:*:*:*"
     ]
   }
+
   statement {
     effect = "Allow"
 
     actions = [
       "dynamodb:BatchWriteItem",
-      "dynamodb:PutItem",
-      "dynamodb:Scan",
       "dynamodb:DescribeStream",
       "dynamodb:GetRecords",
       "dynamodb:GetShardIterator",
-      "dynamodb:ListStreams"
+      "dynamodb:ListStreams",
+      "dynamodb:Query",
+      "dynamodb:UpdateItem"
     ]
 
     resources = [
-      "*",
+      aws_dynamodb_table.validator_brownfield_sites_dynamodb.arn,
+      "${aws_dynamodb_table.validator_brownfield_sites_dynamodb.arn}/index/*",
+      aws_dynamodb_table.validator_brownfield_sites_dynamodb.stream_arn
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "s3:*"
+    ]
+
+    resources = [
+      "${aws_s3_bucket.validator_brownfield_sites_s3.arn}/*"
     ]
   }
 }
 
-resource "aws_iam_policy" "validator_fetch_master" {
-  name = "validator_access_scheduler"
-  path = "/"
-  policy = data.aws_iam_policy_document.validator_fetch_master.json
-}
-
-resource "aws_iam_role_policy_attachment" "validator_access_scheduler" {
-  role = aws_iam_role.validator_fetch_master.name
-  policy_arn = aws_iam_policy.validator_fetch_master.arn
-}
+# TODO: Split these out into more succinct roles
